@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  id           String @id @default(uuid()) @db.VarChar(50)
+  cnpj         String @unique @db.VarChar(20)
+  razao_social String @db.VarChar(250)
+  qtde_pca     Int
+  link         String
+
+  // relacionamentos
+  pca Pca[]
+
+  @@map("clientes")
+}
+
+model Pca {
+  id            String @id @default(uuid()) @db.VarChar(50)
+  ano           Int
+  status        String @db.VarChar(50)
+  identificacao String
+  valor         Float
+  itens         Int
+  link          String
+
+  // relacionamentos
+  cliente       Cliente         @relation(fields: [cliente_id], references: [id], onDelete: Cascade)
+  cliente_id    String          @db.VarChar(50)
+  resumoPlano   ResumoPlano[]
+  detalhesPlano DetalhesPlano[]
+
+  @@map("pcas")
+}
+
+model ResumoPlano {
+  id               String @id @default(uuid()) @db.VarChar(50)
+  tipo             String
+  itens            Int
+  percentual_item  Float
+  valor_total      Float
+  percentual_valor Float
+
+  // relacionamento
+  pca    Pca    @relation(fields: [pca_id], references: [id], onDelete: Cascade)
+  pca_id String @db.VarChar(50)
+
+  @@map("resumoplanos")
+}
+
+enum Tipo {
+  METERIAIS
+  SERVICOS
+}
+
+model DetalhesPlano {
+  id            String   @id @default(uuid()) @db.VarChar(50)
+  tipo          Tipo
+  uasg          String?
+  numero_item   Int
+  codigo_item   String?
+  descricao     String
+  quantidade    Int
+  unidade       String
+  valor_total   Float    @default(0)
+  prioridade    String
+  data_desejada DateTime @db.Date
+
+  // relacionametos
+  pca    Pca    @relation(fields: [pca_id], references: [id], onDelete: Cascade)
+  pca_id String @db.VarChar(50)
+
+  @@map("detalhesplanos")
+}
