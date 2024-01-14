@@ -1,5 +1,12 @@
 <h1 align="center">Desafio Crawler</h1>
 
+# Desenvolvimento e escolha das ferramentas
+
+- Utilize o `cheerio` para fazer o parse do HTML e extrair as informações necessarias em cada etapa do processo
+- Para fazer as requisições nos endpoint utilizei o `fetch` que nas versões mais recentes do NodeJS já vem por padrão
+- Banco de Dados preferi utilizar o PostgreSQL no docker compose, para facilitar a manutenção e integração, e a conexão utilizei o framework `Prisma ORM`, que além de ser ORM Typescript, é muito robusto e agiliza no desenvolvimento das migrations
+- Fastify: framework NodeJS rápido e seguro
+
 ## Pré-requisitos
 
 - Node.js (Version: >= 20.x)
