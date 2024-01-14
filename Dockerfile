@@ -1,8 +1,8 @@
-FROM node:20.9.0
+FROM node:20
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 RUN npm install
 
@@ -11,7 +11,6 @@ RUN npx prisma generate
 
 COPY . .
 
-
-EXPOSE 3000
+EXPOSE 3333
 
 CMD [ "node", "./dist/server.js" ]
